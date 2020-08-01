@@ -55,8 +55,7 @@ func login(rs http.ResponseWriter, rq *http.Request) {
 * Location: http://localhost:9110/authCodeRedirect?state=123&session_state=6c634b86-8a30-...beaf&code=a16dcfbc-d53b-...-a66dbcfac9c1
  */
 func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
-	fmt.Printf("Request query: %v", rq.URL.Query())
-	fmt.Println()
+	fmt.Printf("Request query: %v\n", rq.URL.Query())
 	authCodeVars.code = rq.URL.Query().Get("code")
 	authCodeVars.sessionState = rq.URL.Query().Get("session_state")
 	http.Redirect(rs, rq, "/", http.StatusFound)

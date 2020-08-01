@@ -19,9 +19,9 @@ var oauth = struct {
 var t = template.Must(template.ParseFiles("template/index.html"))
 
 var authCodeVars = struct {
-	code         string
-	sessionState string
-}{}
+	Code         string
+	SessionState string
+}{Code: "???", SessionState: "???"}
 
 func main() {
 	fmt.Println("Server starting")
@@ -33,7 +33,7 @@ func main() {
 }
 
 func home(rs http.ResponseWriter, rq *http.Request) {
-	t.Execute(rs, nil)
+	t.Execute(rs, authCodeVars)
 }
 
 func login(rs http.ResponseWriter, rq *http.Request) {
@@ -56,8 +56,8 @@ func login(rs http.ResponseWriter, rq *http.Request) {
  */
 func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
 	fmt.Printf("Request query: %v\n", rq.URL.Query())
-	authCodeVars.code = rq.URL.Query().Get("code")
-	authCodeVars.sessionState = rq.URL.Query().Get("session_state")
+	authCodeVars.Code = rq.URL.Query().Get("code")
+	authCodeVars.SessionState = rq.URL.Query().Get("session_state")
 	http.Redirect(rs, rq, "/", http.StatusFound)
 }
 

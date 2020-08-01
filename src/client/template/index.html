@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login with Keycloak</title>
-</head>
-<body>
-  <h1>server started, hello from home</h1>
-  <a href="/login"><button>Login with Keycloak</button></a>
-  <a href="/logout"><button>Logout from Keycloak</button></a>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login with Keycloak</title>
+	</head>
+	<body>
+		<h1>server started, hello from home</h1>
+		<a href="/login"><button>Login with Keycloak</button></a>
+		<a href="/logout"><button>Logout from Keycloak</button></a>
+		<div>
+			<h2>Infos from Auth</h2>
+			<p>code: {{.Code}}</p>
+			<p>session_state: {{.SessionState}}</p>
+		</div>
+	</body>
 </html>

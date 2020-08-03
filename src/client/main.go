@@ -8,12 +8,20 @@ import (
 	"net/url"
 )
 
-var oauth = struct {
+var oauthServer = struct {
 	authURL   string
 	logoutURL string
 }{
 	authURL:   "http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/auth",
 	logoutURL: "http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/logout",
+}
+
+var oauthClient = struct {
+	afterAuthURL   string
+	afterLogoutURL string
+}{
+	afterAuthURL:   "http://localhost:9110/authCodeRedirect",
+	afterLogoutURL: "http://localhost:9110/",
 }
 
 var t = template.Must(template.ParseFiles("template/index.html"))
@@ -37,7 +45,7 @@ func home(rs http.ResponseWriter, rq *http.Request) {
 }
 
 func login(rs http.ResponseWriter, rq *http.Request) {
-	nrq, nerr := http.NewRequest("GET", oauth.authURL, nil)
+	nrq, nerr := http.NewRequest("GET", oauthServer.authURL, nil)
 	if nerr != nil {
 		log.Print(nerr)
 		return
@@ -46,7 +54,7 @@ func login(rs http.ResponseWriter, rq *http.Request) {
 	qs.Add("client_id", "oauth-nailed-app-1")
 	qs.Add("response_type", "code")
 	qs.Add("state", "123")
-	qs.Add("redirect_uri", "http://localhost:9110/authCodeRedirect")
+	qs.Add("redirect_uri", oauthClient.afterAuthURL)
 	nrq.URL.RawQuery = qs.Encode()
 	http.Redirect(rs, rq, nrq.URL.String(), http.StatusFound)
 }
@@ -62,13 +70,15 @@ func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
 }
 
 func logout(rs http.ResponseWriter, rq *http.Request) {
-	nrq, nerr := http.NewRequest("GET", oauth.logoutURL, nil)
+	nrq, nerr := http.NewRequest("GET", oauthServer.logoutURL, nil)
 	if nerr != nil {
 		log.Print(nerr)
 		return
 	}
 	qs := url.Values{}
-	qs.Add("redirect_uri", "http://localhost:9110/")
+	qs.Add("redirect_uri", oauthClient.afterLogoutURL)
 	nrq.URL.RawQuery = qs.Encode()
+	authCodeVars.Code = "???"
+	authCodeVars.SessionState = "???"
 	http.Redirect(rs, rq, nrq.URL.String(), http.StatusFound)
 }

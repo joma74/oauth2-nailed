@@ -42,7 +42,9 @@ var authCodeVars = struct {
 	Code         string
 	SessionState string
 	AccessToken  string
-}{Code: "???", SessionState: "???", AccessToken: "???"}
+	RefreshToken string
+	TokenScope   string
+}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???"}
 
 func main() {
 	fmt.Println("Server starting")
@@ -105,6 +107,8 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 		return
 	}
 	authCodeVars.AccessToken = accessTokenResponse.AccessToken
+	authCodeVars.RefreshToken = accessTokenResponse.RefreshToken
+	authCodeVars.TokenScope = accessTokenResponse.Scope
 	//
 	var out bytes.Buffer
 	nerr = json.Indent(&out, byteBody, "", "   ")

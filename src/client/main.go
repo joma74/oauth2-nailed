@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"reflect"
+	"runtime"
 	"strings"
 
 	"learn.oauth.client/model"
@@ -48,12 +50,21 @@ var authCodeVars = struct {
 
 func main() {
 	fmt.Println("Server starting")
-	http.HandleFunc("/", home)
-	http.HandleFunc("/login", login)
-	http.HandleFunc("/accessToken", accessToken)
-	http.HandleFunc("/authCodeRedirect", authCodeRedirect)
-	http.HandleFunc("/logout", logout)
+	http.HandleFunc("/", withMethodLogging(home))
+	http.HandleFunc("/login", withMethodLogging(login))
+	http.HandleFunc("/accessToken", withMethodLogging(accessToken))
+	http.HandleFunc("/authCodeRedirect", withMethodLogging(authCodeRedirect))
+	http.HandleFunc("/logout", withMethodLogging(logout))
 	http.ListenAndServe(":9110", nil)
+}
+
+func withMethodLogging(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(rs http.ResponseWriter, rq *http.Request) {
+		methodName := runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name()
+		fmt.Printf("\033[1;36m%s\033[0m\n", "--> "+methodName)
+		handler(rs, rq)
+		fmt.Printf("\033[1;36m%s\033[0m\n", "<-- "+methodName)
+	}
 }
 
 func home(rs http.ResponseWriter, rq *http.Request) {
@@ -63,7 +74,7 @@ func home(rs http.ResponseWriter, rq *http.Request) {
 func login(rs http.ResponseWriter, rq *http.Request) {
 	nrq, nerr := http.NewRequest("GET", oauthServer.authURL, nil)
 	if nerr != nil {
-		log.Print(nerr)
+		fmt.Print(nerr)
 		return
 	}
 	qs := url.Values{}
@@ -85,25 +96,25 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 	nrq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	nrq.SetBasicAuth(oauthClient.clientID, oauthClient.clientPassword)
 	if nerr != nil {
-		log.Print("Could not create new request", nerr)
+		fmt.Println("Could not create new request", nerr)
 		return
 	}
 	c := http.Client{}
 	nrs, nerr := c.Do(nrq)
 	if nerr != nil {
-		log.Print("Could not get access token", nerr)
+		fmt.Println("Could not get access token", nerr)
 		return
 	}
 	byteBody, nerr := ioutil.ReadAll(nrs.Body)
 	defer nrs.Body.Close()
 	if nerr != nil {
-		log.Print("Could not read body", nerr)
+		fmt.Println("Could not read body", nerr)
 		return
 	}
 	accessTokenResponse := &model.AccessTokenResponse{}
 	nerr = json.Unmarshal(byteBody, accessTokenResponse)
 	if nerr != nil {
-		log.Print("Could not unmarshal response to model.AccessTokenResponse", nerr)
+		fmt.Println("Could not unmarshal response to model.AccessTokenResponse", nerr)
 		return
 	}
 	authCodeVars.AccessToken = accessTokenResponse.AccessToken
@@ -113,7 +124,7 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 	var out bytes.Buffer
 	nerr = json.Indent(&out, byteBody, "", "   ")
 	if nerr != nil {
-		log.Print("Could not pretty print response", nerr)
+		fmt.Println("Could not pretty print response", nerr)
 		return
 	}
 	fmt.Printf("Access token response: %v\n", out.String())
@@ -142,5 +153,8 @@ func logout(rs http.ResponseWriter, rq *http.Request) {
 	nrq.URL.RawQuery = qs.Encode()
 	authCodeVars.Code = "???"
 	authCodeVars.SessionState = "???"
+	authCodeVars.AccessToken = "???"
+	authCodeVars.RefreshToken = "???"
+	authCodeVars.TokenScope = "???"
 	http.Redirect(rs, rq, nrq.URL.String(), http.StatusFound)
 }

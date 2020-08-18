@@ -1,7 +1,25 @@
 # Replay after Udemy "OAuth2.0 : Nailed the core framework"
 
-The authorization code grant type is used to obtain both access
-tokens and refresh tokens and is optimized for confidential clients.
+## Treated OAuth 2.0 Flows
+
+### The Abstract OAuth 2.0 Flow
+
+> The abstract OAuth 2.0 flow illustrated describes the interaction between the four roles.
+
+<img src="./docs/OAuth2.0Standard_AbstractProtocolFlow.png" alt="The abstract OAuth 2.0 flow illustrated describes the interaction between the four roles."
+	title="The abstract OAuth 2.0 flow illustrated describes the interaction between the four roles." width="700" height="auto" />
+
+See https://tools.ietf.org/html/rfc6749#section-1.2
+
+### The Authorization Code Grant
+
+> The authorization code grant type is used to obtain both access
+> tokens and refresh tokens and is optimized for confidential clients.
+>
+> Since this is a redirection-based flow, the client must be capable of
+> interacting with the resource owner's user-agent (typically a web
+> browser) and capable of receiving incoming requests (via redirection)
+> from the authorization server.
 
 <img src="./docs/OAuth2.0Standard_AuthorizationCodeGrant.png" alt="Authorization Code Flow"
 	title="The authorization code grant type is used to obtain both access
@@ -65,6 +83,8 @@ _The numbers reference the related section in https://tools.ietf.org/html/rfc674
 
 - https://tools.ietf.org/html/rfc6749 (The OAuth 2.0 Authorization Framework Standard)
   - https://tools.ietf.org/html/rfc6749#section-4.1 (Authorization Code Grant)
+  - https://tools.ietf.org/html/rfc6749#section-7 (Accessing Protected Resources)
+- https://tools.ietf.org/html/rfc6750 (The OAuth 2.0 Bearer Token Usage)
 - https://github.com/keycloak/keycloak-containers/blob/11.0.0/server/README.md
 - https://www.keycloak.org/docs-api/11.0/rest-api/index.html
 - https://www.keycloak.org/docs/latest/securing_apps

@@ -38,22 +38,31 @@ var oauthClient = struct {
 	afterLogoutURL: "http://localhost:9110/",
 }
 
+var servicesServer = struct {
+	serviceEndpoint string
+}{
+	serviceEndpoint: "http://localhost:9111/billing/v1/services",
+}
+
 var t = template.Must(template.ParseFiles("template/index.html"))
+var tServices = template.Must(template.ParseFiles("template/index.html", "template/services.html"))
 
 var authCodeVars = struct {
-	Code         string
-	SessionState string
-	AccessToken  string
-	RefreshToken string
-	TokenScope   string
-}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???"}
+	Code            string
+	SessionState    string
+	AccessToken     string
+	RefreshToken    string
+	TokenScope      string
+	BillingServices []string
+}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???", BillingServices: []string{"???"}}
 
 func main() {
 	fmt.Println("Server starting")
 	http.HandleFunc("/", withMethodLogging(home))
 	http.HandleFunc("/login", withMethodLogging(login))
-	http.HandleFunc("/accessToken", withMethodLogging(accessToken))
 	http.HandleFunc("/authCodeRedirect", withMethodLogging(authCodeRedirect))
+	http.HandleFunc("/services", withMethodLogging(services))
+	http.HandleFunc("/accessToken", withMethodLogging(accessToken))
 	http.HandleFunc("/logout", withMethodLogging(logout))
 	http.ListenAndServe(":9110", nil)
 }
@@ -84,6 +93,16 @@ func login(rs http.ResponseWriter, rq *http.Request) {
 	qs.Add("redirect_uri", oauthClient.afterAuthURL)
 	nrq.URL.RawQuery = qs.Encode()
 	http.Redirect(rs, rq, nrq.URL.String(), http.StatusFound)
+}
+
+/**
+ * Location: http://localhost:9110/authCodeRedirect?state=123&session_state=6c634b86-8a30-...beaf&code=a16dcfbc-d53b-...-a66dbcfac9c1
+ */
+func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
+	fmt.Printf("After authentication the delivered data from Keycloak are:\n%v\n", rq.URL.Query())
+	authCodeVars.Code = rq.URL.Query().Get("code")
+	authCodeVars.SessionState = rq.URL.Query().Get("session_state")
+	http.Redirect(rs, rq, "/", http.StatusFound)
 }
 
 func accessToken(rs http.ResponseWriter, rq *http.Request) {
@@ -132,14 +151,41 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 	http.Redirect(rs, rq, "/", http.StatusFound)
 }
 
-/**
-* Location: http://localhost:9110/authCodeRedirect?state=123&session_state=6c634b86-8a30-...beaf&code=a16dcfbc-d53b-...-a66dbcfac9c1
- */
-func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
-	fmt.Printf("After authentication the delivered data from Keycloak are:\n%v\n", rq.URL.Query())
-	authCodeVars.Code = rq.URL.Query().Get("code")
-	authCodeVars.SessionState = rq.URL.Query().Get("session_state")
-	http.Redirect(rs, rq, "/", http.StatusFound)
+func services(rs http.ResponseWriter, rq *http.Request) {
+	nrq, nerr := http.NewRequest("GET", servicesServer.serviceEndpoint, nil)
+	if nerr != nil {
+		log.Print(nerr)
+		return
+	}
+
+	c := http.Client{}
+	nrs, nerr := c.Do(nrq)
+	if nerr != nil {
+		fmt.Println("Could not get services", nerr)
+		return
+	}
+	byteBody, nerr := ioutil.ReadAll(nrs.Body)
+	defer nrs.Body.Close()
+	if nerr != nil {
+		fmt.Println("Could not read body", nerr)
+		return
+	}
+	billingServicesResponse := &model.BillingServicesResponse{}
+	nerr = json.Unmarshal(byteBody, billingServicesResponse)
+	if nerr != nil {
+		fmt.Println("Could not unmarshal response to model.BillingServicesResponse", nerr)
+		return
+	}
+	authCodeVars.BillingServices = billingServicesResponse.Services
+	//
+	var out bytes.Buffer
+	nerr = json.Indent(&out, byteBody, "", "   ")
+	if nerr != nil {
+		fmt.Println("Could not pretty print response", nerr)
+		return
+	}
+	fmt.Printf("Services response: %v\n", out.String())
+	tServices.Execute(rs, authCodeVars)
 }
 
 func logout(rs http.ResponseWriter, rq *http.Request) {

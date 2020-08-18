@@ -8,7 +8,8 @@
 	<body>
 		<h1>server started, hello from home</h1>
 		<a href="/login"><button>Login with Keycloak</button></a>
-		<a href="/accessToken"><button>Access token from Keycloak</button></a>
+    <a href="/accessToken"><button>Access token from Keycloak</button></a>
+    <a href="/services"><button>Show billing services</button></a>
 		<a href="/logout"><button>Logout from Keycloak</button></a>
 		<div>
 			<h2>Infos from Auth</h2>
@@ -17,6 +18,7 @@
       <p>access token:<pre>{{.AccessToken}}</pre></p>
       <p>refresh token:<pre>{{.RefreshToken}}</pre></p>
       <p>token scope:<pre>{{.TokenScope}}</pre></p>
-		</div>
+    </div>
+    {{block "services" .BillingServices}}{{end}}
 	</body>
 </html>

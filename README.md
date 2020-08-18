@@ -54,9 +54,12 @@ The OAuth Client page is then reachable via http://localhost:9110/
 
 It covers the flow of
 
-- A (Authorization Request)
-- C (Authorization Response)
-- D (Access Token Request)
+- A (Authorization Request, 4.1.1)
+- C (Authorization Response, 4.1.2)
+- D (Access Token Request, 4.1.3)
+- E (Access Token Response, 4.1.4)
+
+_The numbers reference the related section in https://tools.ietf.org/html/rfc6749_
 
 ## References
 

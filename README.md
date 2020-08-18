@@ -68,3 +68,7 @@ _The numbers reference the related section in https://tools.ietf.org/html/rfc674
 - https://github.com/keycloak/keycloak-containers/blob/11.0.0/server/README.md
 - https://www.keycloak.org/docs-api/11.0/rest-api/index.html
 - https://www.keycloak.org/docs/latest/securing_apps
+
+## Tooling
+
+- http://json2struct.mervine.net (Derive a Go struct type from a Json instance)

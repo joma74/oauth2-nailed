@@ -118,14 +118,14 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 	}
 	fmt.Printf("Access token response: %v\n", out.String())
 	//
-	t.Execute(rs, authCodeVars)
+	http.Redirect(rs, rq, "/", http.StatusFound)
 }
 
 /**
 * Location: http://localhost:9110/authCodeRedirect?state=123&session_state=6c634b86-8a30-...beaf&code=a16dcfbc-d53b-...-a66dbcfac9c1
  */
 func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
-	fmt.Printf("Request query: %v\n", rq.URL.Query())
+	fmt.Printf("After authentication the delivered data from Keycloak are:\n%v\n", rq.URL.Query())
 	authCodeVars.Code = rq.URL.Query().Get("code")
 	authCodeVars.SessionState = rq.URL.Query().Get("session_state")
 	http.Redirect(rs, rq, "/", http.StatusFound)

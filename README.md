@@ -66,8 +66,8 @@ So that
 ## Starting the OAuth Client
 
 ```
-joma@edison:oauth2-nailed (master%=) $ cd src/client/
-joma@edison:client (master%=) $ go run .
+cd src/client/
+go run .
 ```
 
 The OAuth Client page is then reachable via http://localhost:9110/
@@ -80,6 +80,13 @@ It covers the flow of
 - E (Access Token Response, 4.1.4)
 
 _The numbers reference the related section in https://tools.ietf.org/html/rfc6749_
+
+## Starting the OAuth Protected Resource
+
+```
+cd src/billingservice/
+go run .
+```
 
 ## References
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -12,6 +13,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"time"
 
 	"learn.oauth.client/model"
 )
@@ -54,7 +56,7 @@ var authCodeVars = struct {
 	RefreshToken    string
 	TokenScope      string
 	BillingServices []string
-}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???", BillingServices: []string{"???"}}
+}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???", BillingServices: []string{}}
 
 func main() {
 	fmt.Println("Server starting")
@@ -152,28 +154,35 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 }
 
 func services(rs http.ResponseWriter, rq *http.Request) {
+	authCodeVars.BillingServices = []string{"😞 Billing Services not available, check the log for cause"}
 	nrq, nerr := http.NewRequest("GET", servicesServer.serviceEndpoint, nil)
 	if nerr != nil {
 		log.Print(nerr)
+		tServices.Execute(rs, authCodeVars)
 		return
 	}
 
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancelFunc()
 	c := http.Client{}
-	nrs, nerr := c.Do(nrq)
+	nrs, nerr := c.Do(nrq.WithContext(ctx))
 	if nerr != nil {
 		fmt.Println("Could not get services", nerr)
+		tServices.Execute(rs, authCodeVars)
 		return
 	}
 	byteBody, nerr := ioutil.ReadAll(nrs.Body)
 	defer nrs.Body.Close()
 	if nerr != nil {
 		fmt.Println("Could not read body", nerr)
+		tServices.Execute(rs, authCodeVars)
 		return
 	}
 	billingServicesResponse := &model.BillingServicesResponse{}
 	nerr = json.Unmarshal(byteBody, billingServicesResponse)
 	if nerr != nil {
 		fmt.Println("Could not unmarshal response to model.BillingServicesResponse", nerr)
+		tServices.Execute(rs, authCodeVars)
 		return
 	}
 	authCodeVars.BillingServices = billingServicesResponse.Services
@@ -182,9 +191,10 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 	nerr = json.Indent(&out, byteBody, "", "   ")
 	if nerr != nil {
 		fmt.Println("Could not pretty print response", nerr)
+		tServices.Execute(rs, authCodeVars)
 		return
 	}
-	fmt.Printf("Services response: %v\n", out.String())
+	fmt.Printf("Services response: %v", out.String())
 	tServices.Execute(rs, authCodeVars)
 }
 

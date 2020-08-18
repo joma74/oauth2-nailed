@@ -1,5 +1,7 @@
 # Replay after Udemy "OAuth2.0 : Nailed the core framework"
 
+See https://www.udemy.com/course/oauth-2-nailed-the-core-framework-with-hands-dirty
+
 ## Treated OAuth 2.0 Flows
 
 ### The Abstract OAuth 2.0 Flow

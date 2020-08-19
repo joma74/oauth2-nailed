@@ -2,6 +2,11 @@
 
 See https://www.udemy.com/course/oauth-2-nailed-the-core-framework-with-hands-dirty
 
+## The oauth-nailed-app-1 UI
+
+<img src="./docs/UIOfoauth-nailed-app-1.png" alt="The oauth-nailed-app-1 UI"
+	title="The oauth-nailed-app-1 UI" width="700" height="auto" />
+
 ## Treated OAuth 2.0 Flows
 
 ### The Abstract OAuth 2.0 Flow

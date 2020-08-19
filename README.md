@@ -41,9 +41,9 @@ docker logs -f  --tail 20  keycloak_1
 
 The admin interface is then reachable via http://localhost:9112/auth/
 
-## Administer a new Keycloak realm and users
+## Administer Keycloak
 
-### Realm
+### Configure
 
 - Name: myrealm
 - Client: oauth-nailed-app-1
@@ -52,18 +52,19 @@ The admin interface is then reachable via http://localhost:9112/auth/
   - Admin URL: http://localhost:9110/
   - Web Origins: http://localhost:9110/
   - Endpoints: OpenID Endpoint
-- Client: oauth-nailed-app-1-token-checker
-  - Access Type: bearer-only
-  - Client Protocol: openid-connect
 
 So that
 
 <img src="./docs/KeycloakOAuthWellKnown.png" alt="Keycloaks Well-known Openid Configuration"
 	title="Keycloaks Well-known Openid Configuration" width="700" height="auto" />
 
-### User
+- Client: oauth-nailed-app-1-token-checker
+  - Access Type: bearer-only
+  - Client Protocol: openid-connect
 
-- Name/PWD: myuser/myuser
+### Manage User
+
+- Name/Pwd: myuser/myuser
 - Email Verified: Off
 
 ## Starting the OAuth Client

@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "c6aef228-5890-4fea-bab9-c2b418d4aa73",
+		"name": "oauth billing service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "list services /w header",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer mF_9.B5f-4.1JqM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9111/billing/v1/services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9111",
+					"path": [
+						"billing",
+						"v1",
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list services /w body",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "access_token",
+							"value": "mF_9.B5f-4.1JqM",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9111/billing/v1/services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9111",
+					"path": [
+						"billing",
+						"v1",
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list services /w query",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "access_token",
+							"value": "mF_9.B5f-4.1JqM",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9111/billing/v1/services?access_token=mF_9.B5f-4.1JqM",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9111",
+					"path": [
+						"billing",
+						"v1",
+						"services"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "mF_9.B5f-4.1JqM"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token introspection /w access_token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "7e9247c4-bcbe-4783-89f0-880d83ac147f",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "oauth-nailed-app-1-token-checker",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJaNFVObHQ0alZ5STNjUnNTZW9rMjdza2xvM0ZGMzVOaG5nWlA5NEk1R2xnIn0.eyJleHAiOjE1OTc4NjUxOTcsImlhdCI6MTU5Nzg2NDg5NywiYXV0aF90aW1lIjoxNTk3ODY0ODk1LCJqdGkiOiJlNmVjNjNiMS1iYjU4LTQ5NDMtOGUxOC1hM2IyNTUwYzU4ZTEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkxMTIvYXV0aC9yZWFsbXMvbXlyZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI1NTdjYTc0OS02ODhjLTQyZDItYjhiMS05NTNiYzNlZDJmYTciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvYXV0aC1uYWlsZWQtYXBwLTEiLCJzZXNzaW9uX3N0YXRlIjoiODgyODkxNzAtZDQxNy00MzA4LTkwZTAtMjdlYTBkMmM1ODNlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjkxMTAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJteSB1c2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibXl1c2VyIiwiZ2l2ZW5fbmFtZSI6Im15IiwiZmFtaWx5X25hbWUiOiJ1c2VyIn0.nax_6eyRINx8iNXvbRjC9zezx_4NeR_I8eI9W5it8THTU72rL-VjWDa10CtHft4XUEkAvSAl1Qr5iDrDbpK2luxX3ChA1tg4hOAkCncU2GaNPyy02LbEU2L8tvG12Ep2P0FJLyKJXYkc4yJXKWg1O_uTqQII_KaMHxm7Ika2sBn0siGCD3ONQQFtHrhgu65TAZti3rjwKnm9SWvEqHnzflzKohtIrkAkmOFc4XCjN4NZKQsUnPd3BdsXxinHyBmiAcbyoQAwXC4rU3K8TOAWPWWuvwVkayHvcQTHJU1_KcmHKJZ7CDktY0-0LpIBdIbQX9XLn_NmLDrpq01k8QzFcQ",
+							"type": "text"
+						},
+						{
+							"key": "token_type_hint",
+							"value": "access_token",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/token/introspect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9112",
+					"path": [
+						"auth",
+						"realms",
+						"myrealm",
+						"protocol",
+						"openid-connect",
+						"token",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token introspection /w requesting_party_token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "7e9247c4-bcbe-4783-89f0-880d83ac147f",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "oauth-nailed-app-1-token-checker",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJaNFVObHQ0alZ5STNjUnNTZW9rMjdza2xvM0ZGMzVOaG5nWlA5NEk1R2xnIn0.eyJleHAiOjE1OTc4NjUxOTcsImlhdCI6MTU5Nzg2NDg5NywiYXV0aF90aW1lIjoxNTk3ODY0ODk1LCJqdGkiOiJlNmVjNjNiMS1iYjU4LTQ5NDMtOGUxOC1hM2IyNTUwYzU4ZTEiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjkxMTIvYXV0aC9yZWFsbXMvbXlyZWFsbSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI1NTdjYTc0OS02ODhjLTQyZDItYjhiMS05NTNiYzNlZDJmYTciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvYXV0aC1uYWlsZWQtYXBwLTEiLCJzZXNzaW9uX3N0YXRlIjoiODgyODkxNzAtZDQxNy00MzA4LTkwZTAtMjdlYTBkMmM1ODNlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjkxMTAiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJteSB1c2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoibXl1c2VyIiwiZ2l2ZW5fbmFtZSI6Im15IiwiZmFtaWx5X25hbWUiOiJ1c2VyIn0.nax_6eyRINx8iNXvbRjC9zezx_4NeR_I8eI9W5it8THTU72rL-VjWDa10CtHft4XUEkAvSAl1Qr5iDrDbpK2luxX3ChA1tg4hOAkCncU2GaNPyy02LbEU2L8tvG12Ep2P0FJLyKJXYkc4yJXKWg1O_uTqQII_KaMHxm7Ika2sBn0siGCD3ONQQFtHrhgu65TAZti3rjwKnm9SWvEqHnzflzKohtIrkAkmOFc4XCjN4NZKQsUnPd3BdsXxinHyBmiAcbyoQAwXC4rU3K8TOAWPWWuvwVkayHvcQTHJU1_KcmHKJZ7CDktY0-0LpIBdIbQX9XLn_NmLDrpq01k8QzFcQ",
+							"type": "text"
+						},
+						{
+							"key": "token_type_hint",
+							"value": "requesting_party_token",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/token/introspect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9112",
+					"path": [
+						"auth",
+						"realms",
+						"myrealm",
+						"protocol",
+						"openid-connect",
+						"token",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

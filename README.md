@@ -79,6 +79,9 @@ It covers the flow of
 - D (Access Token Request, 4.1.3)
 - E (Access Token Response, 4.1.4)
 
+* E (Accessing Protected Resources, 7.)
+* F (Accessing Protected Resources, 7.)
+
 _The numbers reference the related section in https://tools.ietf.org/html/rfc6749_
 
 ## Starting the OAuth Protected Resource

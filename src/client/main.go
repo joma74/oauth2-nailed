@@ -161,7 +161,6 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 		tServices.Execute(rs, authCodeVars)
 		return
 	}
-
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	defer cancelFunc()
 	c := http.Client{}

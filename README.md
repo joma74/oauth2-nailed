@@ -113,3 +113,4 @@ go run .
 ## Tooling
 
 - http://json2struct.mervine.net (Derive a Go struct type from a Json instance)
+- https://jwt.io/ (Inspect JWT token)

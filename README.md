@@ -93,6 +93,8 @@ go run .
 
 ## References
 
+### General
+
 - https://tools.ietf.org/html/rfc6749 (The OAuth 2.0 Authorization Framework Standard)
   - https://tools.ietf.org/html/rfc6749#section-4.1 (Authorization Code Grant)
   - https://tools.ietf.org/html/rfc6749#section-7 (Accessing Protected Resources)
@@ -100,6 +102,13 @@ go run .
 - https://github.com/keycloak/keycloak-containers/blob/11.0.0/server/README.md
 - https://www.keycloak.org/docs-api/11.0/rest-api/index.html
 - https://www.keycloak.org/docs/latest/securing_apps
+
+### Token Introspection
+
+- https://www.keycloak.org/docs/latest/authorization_services/#obtaining-information-about-an-rpt (Token Introspection by Keycloak)
+- https://www.keycloak.org/docs/latest/securing_apps/#_token_introspection_endpoint (Introspection Endpoint by Keycloak)
+- https://tools.ietf.org/html/rfc7662 (OAuth 2.0 Token Introspection)
+- https://tools.ietf.org/html/rfc7662#section-2.1 (Introspection Request)
 
 ## Tooling
 

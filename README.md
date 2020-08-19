@@ -51,7 +51,10 @@ The admin interface is then reachable via http://localhost:9112/auth/
   - Valid Redirect URIs: http://localhost:9110/*
   - Admin URL: http://localhost:9110/
   - Web Origins: http://localhost:9110/
-- Endpoints: OpenID Endpoint
+  - Endpoints: OpenID Endpoint
+- Client: oauth-nailed-app-1-token-checker
+  - Access Type: bearer-only
+  - Client Protocol: openid-connect
 
 So that
 

@@ -95,6 +95,11 @@ cd src/billingservice/
 go run .
 ```
 
+It covers the flow of
+
+- E (Accessing Protected Resources, 7.)
+- F (Accessing Protected Resources, 7.)
+
 ## References
 
 ### General

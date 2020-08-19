@@ -154,7 +154,7 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 }
 
 func services(rs http.ResponseWriter, rq *http.Request) {
-	authCodeVars.BillingServices = []string{"😞 Billing Services not available, check the log for cause"}
+	authCodeVars.BillingServices = []string{"😞 Billing services not available or access denied, check the log for cause"}
 	nrq, nerr := http.NewRequest("GET", servicesServer.serviceEndpoint, nil)
 	if nerr != nil {
 		log.Print(nerr)
@@ -167,6 +167,11 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 	nrs, nerr := c.Do(nrq.WithContext(ctx))
 	if nerr != nil {
 		fmt.Println("Could not get services", nerr)
+		tServices.Execute(rs, authCodeVars)
+		return
+	}
+	if nrs.StatusCode != 200 {
+		fmt.Println("Expected service response to be of status 200 but was ", nrs.StatusCode)
 		tServices.Execute(rs, authCodeVars)
 		return
 	}

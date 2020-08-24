@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -63,12 +64,14 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 	}
 	fmt.Println("Access token is valid and active")
 	//
-	// tokenParts := strings.Split(accessToken, ".")
-	// claims, nerr := base64.StdEncoding.DecodeString(tokenParts[1])
-	// if nerr != nil {
-	// 	fmt.Print("Could not decode paylod from accessToken", nerr)
-	// 	return
-	// }
+	payloadString, nerr := getPayloadString(accessToken)
+	if nerr != nil {
+		nerr := fmt.Errorf("Could not decode paylod from accessToken: %v", nerr)
+		sendErrorResponseMessage(nerr, http.StatusBadRequest, rs)
+		return
+	}
+
+	fmt.Println("Payload: ", payloadString)
 	//
 	s := model.BillingServicesResponse{Services: []string{"electric", "phone", "internet", "water"}}
 	rs.Header().Add("Content-Type", "application/json")
@@ -135,6 +138,12 @@ func isAccessTokenValid(accessToken string) bool {
 	}
 
 	return introspectionRequestingPartyTokenResponse.Active
+}
+
+func getPayloadString(accessToken string) (string, error) {
+	tokenParts := strings.Split(accessToken, ".")
+	payload, nerr := base64.RawURLEncoding.DecodeString(tokenParts[1])
+	return string(payload), nerr
 }
 
 func sendErrorResponseMessage(nerr error, statusCode int, rs http.ResponseWriter) {

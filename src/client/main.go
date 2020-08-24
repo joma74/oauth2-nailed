@@ -35,7 +35,7 @@ var oauthClient = struct {
 	afterAuthURL   string
 	afterLogoutURL string
 }{
-	clientID:       "oauth-nailed-app-1",
+	clientID:       "oauth-nailed-app-1-auth-code",
 	clientPassword: "0c061d83-f4f6-4678-94aa-5dc8d9584eea",
 	afterAuthURL:   "http://localhost:9110/authCodeRedirect",
 	afterLogoutURL: "http://localhost:9110/home",

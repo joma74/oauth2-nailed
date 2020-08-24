@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"learn.oauth.client/model"
 )
 
@@ -50,13 +51,14 @@ var t = template.Must(template.ParseFiles("template/index.html"))
 var tServices = template.Must(template.ParseFiles("template/index.html", "template/services.html"))
 
 var authCodeVars = struct {
-	Code            string
-	SessionState    string
-	AccessToken     string
-	RefreshToken    string
-	TokenScope      string
-	BillingServices []string
-}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???", BillingServices: []string{}}
+	Code               string
+	SessionState       string
+	AccessToken        string
+	RefreshToken       string
+	TokenScope         string
+	BillingServices    []string
+	crossSiteUUIDState string
+}{Code: "???", SessionState: "???", AccessToken: "???", RefreshToken: "???", TokenScope: "???", BillingServices: []string{}, crossSiteUUIDState: uuid.New().String()}
 
 func main() {
 	fmt.Println("Server starting")
@@ -93,9 +95,10 @@ func login(rs http.ResponseWriter, rq *http.Request) {
 		return
 	}
 	qs := url.Values{}
+	authCodeVars.crossSiteUUIDState = uuid.New().String()
+	qs.Add("state", authCodeVars.crossSiteUUIDState)
 	qs.Add("client_id", oauthClient.clientID)
 	qs.Add("response_type", "code")
-	qs.Add("state", "123")
 	qs.Add("redirect_uri", oauthClient.afterAuthURL)
 	nrq.URL.RawQuery = qs.Encode()
 	http.Redirect(rs, rq, nrq.URL.String(), http.StatusFound)
@@ -106,6 +109,13 @@ func login(rs http.ResponseWriter, rq *http.Request) {
  */
 func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
 	fmt.Printf("After authentication the delivered data from Keycloak are:\n%v\n", rq.URL.Query())
+	authCodeRedirectState := rq.URL.Query().Get("state")
+	if authCodeVars.crossSiteUUIDState != authCodeRedirectState {
+		fmt.Println("authentication redirect's state did not match the crossSiteUUIDState here")
+		rs.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(rs, "Error")
+		return
+	}
 	authCodeVars.Code = rq.URL.Query().Get("code")
 	authCodeVars.SessionState = rq.URL.Query().Get("session_state")
 	accessToken()

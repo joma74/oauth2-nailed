@@ -34,6 +34,19 @@ See https://tools.ietf.org/html/rfc6749#section-1.2
 
 See https://tools.ietf.org/html/rfc6749#section-4.1
 
+### The Implicit Grant
+
+> The implicit grant type is used to obtain access tokens (it does not
+> support the issuance of refresh tokens) and is optimized for public
+> clients known to operate a particular redirection URI. These clients
+> are typically implemented in a browser using a scripting language
+> such as JavaScript.
+
+<img src="./docs/OAuth2.0Standard_ImplicitGrantFlow.png" alt="Implicit Grant Flow"
+	title="The implicit grant type is used to obtain access tokens (it does not
+   support the issuance of refresh tokens) and is optimized for public
+   clients known to operate a particular redirection URI." width="700" height="auto" />
+
 ## Setup Keycloak on Docker
 
 ```
@@ -118,6 +131,7 @@ It covers the flow of
 - https://tools.ietf.org/html/rfc6749 (The OAuth 2.0 Authorization Framework Standard)
   - https://tools.ietf.org/html/rfc6749#section-4.1 (Authorization Code Grant)
   - https://tools.ietf.org/html/rfc6749#section-7 (Accessing Protected Resources)
+  - https://tools.ietf.org/html/rfc6749#section-4.2 (Implicit Grant)
 - https://tools.ietf.org/html/rfc6750 (The OAuth 2.0 Bearer Token Usage)
 - https://tools.ietf.org/html/rfc7519 (JSON Web Token (JWT))
   - https://tools.ietf.org/html/rfc7519#section-7.2 (Validating a JWT)

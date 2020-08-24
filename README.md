@@ -66,12 +66,12 @@ The admin interface is then reachable via http://localhost:9112/auth/
 ### Configure Realm
 
 - Name: myrealm
-- Client: oauth-nailed-app-1
+
+- Client: oauth-nailed-app-1-auth-code
   - Root URL: http://localhost:9110/
+  - Client Protocol: openid-connect
+  - Access Type: confidental
   - Valid Redirect URIs: http://localhost:9110/*
-  - Admin URL: http://localhost:9110/
-  - Web Origins: http://localhost:9110/
-  - Endpoints: OpenID Endpoint
 
 So that
 
@@ -79,8 +79,15 @@ So that
 	title="Keycloaks Well-known Openid Configuration" width="700" height="auto" />
 
 - Client: oauth-nailed-app-1-token-checker
-  - Access Type: bearer-only
+
   - Client Protocol: openid-connect
+  - Access Type: bearer-only
+
+- Client: oauth-nailed-app-2-implicit-grant
+
+  - Root URL: http://localhost:3000
+  - Client Protocol: openid-connect
+  - Access Type: public
 
 ### Manage User
 

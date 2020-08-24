@@ -37,7 +37,7 @@ var oauthClient = struct {
 	clientID:       "oauth-nailed-app-1",
 	clientPassword: "0c061d83-f4f6-4678-94aa-5dc8d9584eea",
 	afterAuthURL:   "http://localhost:9110/authCodeRedirect",
-	afterLogoutURL: "http://localhost:9110/",
+	afterLogoutURL: "http://localhost:9110/home",
 }
 
 var servicesServer = struct {
@@ -60,11 +60,11 @@ var authCodeVars = struct {
 
 func main() {
 	fmt.Println("Server starting")
-	http.HandleFunc("/", withMethodLogging(home))
+	http.HandleFunc("/", withMethodLogging(root))
+	http.HandleFunc("/home", withMethodLogging(home))
 	http.HandleFunc("/login", withMethodLogging(login))
 	http.HandleFunc("/authCodeRedirect", withMethodLogging(authCodeRedirect))
 	http.HandleFunc("/services", withMethodLogging(services))
-	http.HandleFunc("/accessToken", withMethodLogging(accessToken))
 	http.HandleFunc("/logout", withMethodLogging(logout))
 	http.ListenAndServe(":9110", nil)
 }
@@ -76,6 +76,10 @@ func withMethodLogging(handler func(http.ResponseWriter, *http.Request)) func(ht
 		handler(rs, rq)
 		fmt.Printf("\033[1;36m%s\033[0m\n", "<-- "+methodName)
 	}
+}
+
+func root(rs http.ResponseWriter, rq *http.Request) {
+	http.Redirect(rs, rq, "/home", http.StatusFound)
 }
 
 func home(rs http.ResponseWriter, rq *http.Request) {
@@ -104,10 +108,11 @@ func authCodeRedirect(rs http.ResponseWriter, rq *http.Request) {
 	fmt.Printf("After authentication the delivered data from Keycloak are:\n%v\n", rq.URL.Query())
 	authCodeVars.Code = rq.URL.Query().Get("code")
 	authCodeVars.SessionState = rq.URL.Query().Get("session_state")
-	http.Redirect(rs, rq, "/", http.StatusFound)
+	accessToken()
+	http.Redirect(rs, rq, "/home", http.StatusFound)
 }
 
-func accessToken(rs http.ResponseWriter, rq *http.Request) {
+func accessToken() {
 	form := url.Values{}
 	form.Add("grant_type", "authorization_code")
 	form.Add("code", authCodeVars.Code)
@@ -149,8 +154,6 @@ func accessToken(rs http.ResponseWriter, rq *http.Request) {
 		return
 	}
 	fmt.Printf("Access token response: %v\n", out.String())
-	//
-	http.Redirect(rs, rq, "/", http.StatusFound)
 }
 
 func services(rs http.ResponseWriter, rq *http.Request) {

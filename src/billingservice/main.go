@@ -89,10 +89,12 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 	if !strings.Contains(accessTokenPayload.Scope, oauthClient.scopeNameBillingservice) {
 		nerr := fmt.Errorf("Denied access because a access token's scope of '" + oauthClient.scopeNameBillingservice + "' is required but was not provided.")
 		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
+		return
 	}
 	//
 	s := model.BillingServicesResponse{Services: []string{"electric", "phone", "internet", "water"}}
 	rs.Header().Add("Content-Type", "application/json")
+	rs.Header().Add("Access-Control-Allow-Origin", "*")
 	encoder := json.NewEncoder(rs)
 	encoder.Encode(s)
 }
@@ -168,6 +170,7 @@ func sendErrorResponseMessage(nerr error, statusCode int, rs http.ResponseWriter
 	fmt.Println(nerr.Error())
 	s := &model.BillingServicesErrorResponse{Error: nerr.Error()}
 	rs.Header().Add("Content-Type", "application/json")
+	rs.Header().Add("Access-Control-Allow-Origin", "*")
 	rs.WriteHeader(statusCode)
 	encoder := json.NewEncoder(rs)
 	encoder.Encode(s)

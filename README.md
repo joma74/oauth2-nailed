@@ -68,15 +68,11 @@ The admin interface is then reachable via http://localhost:9112/auth/
 - Name: myrealm
 
 - Client: oauth-nailed-app-1-auth-code
+
   - Root URL: http://localhost:9110/
   - Client Protocol: openid-connect
   - Access Type: confidental
-  - Valid Redirect URIs: http://localhost:9110/*
-
-So that
-
-<img src="./docs/KeycloakOAuthWellKnown.png" alt="Keycloaks Well-known Openid Configuration"
-	title="Keycloaks Well-known Openid Configuration" width="700" height="auto" />
+  - Valid Redirect URIs: http://localhost:9110/authCodeRedirect
 
 - Client: oauth-nailed-app-1-token-checker
 
@@ -88,6 +84,12 @@ So that
   - Root URL: http://localhost:3000
   - Client Protocol: openid-connect
   - Access Type: public
+  - Valid Redirect URIs: http://localhost:3000/authCodeRedirect
+
+So that
+
+<img src="./docs/KeycloakOAuthWellKnown.png" alt="Keycloaks Well-known Openid Configuration"
+	title="Keycloaks Well-known Openid Configuration" width="700" height="auto" />
 
 ### Manage User
 
@@ -161,6 +163,7 @@ It covers the flow of
 
 - http://json2struct.mervine.net (Derive a Go struct type from a Json instance)
 - https://jwt.io/ (Inspect JWT token)
+- https://reactrouter.com/web/guides/quick-start (Router in React)
 
 ### Go
 

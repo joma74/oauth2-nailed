@@ -134,5 +134,53 @@ It covers the flow of
 
 ## Tooling
 
+### Diverse
+
 - http://json2struct.mervine.net (Derive a Go struct type from a Json instance)
 - https://jwt.io/ (Inspect JWT token)
+
+### Go
+
+Setup
+
+```bash
+joma@edison:oauth2-nailed (master*=) $ GOPATH=$(go env GOPATH)
+joma@edison:oauth2-nailed (master*=) $ tree -L 2 $GOPATH
+/home/joma/go
+├── bin
+│   ├── dlv
+│   ├── fillstruct
+│   ├── gocode
+│   ├── gocode-gomod
+│   ├── godef
+│   ├── godoctor
+│   ├── goimports
+│   ├── golint
+│   ├── gomodifytags
+│   ├── go-outline
+│   ├── gopkgs
+│   ├── goplay
+│   ├── gorename
+│   ├── goreturns
+│   ├── go-symbols
+│   ├── gotests
+│   ├── guru
+│   └── impl
+├── pkg
+│   ├── linux_amd64
+│   └── mod
+└── src
+    ├── github.com
+    └── golang.org
+
+7 directories, 18 files
+```
+
+Install a module
+
+```bash
+joma@edison:oauth2-nailed (master*=) $ cd src/client/
+joma@edison:client (master*=) $ go get github.com/google/uuid
+go: finding github.com/google/uuid v1.1.1
+go: downloading github.com/google/uuid v1.1.1
+```

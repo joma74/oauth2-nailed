@@ -47,6 +47,8 @@ See https://tools.ietf.org/html/rfc6749#section-4.1
    support the issuance of refresh tokens) and is optimized for public
    clients known to operate a particular redirection URI." width="700" height="auto" />
 
+See https://tools.ietf.org/html/rfc6749#section-4.2
+
 ## Setup Keycloak on Docker
 
 ```

@@ -119,6 +119,8 @@ It covers the flow of
   - https://tools.ietf.org/html/rfc6749#section-4.1 (Authorization Code Grant)
   - https://tools.ietf.org/html/rfc6749#section-7 (Accessing Protected Resources)
 - https://tools.ietf.org/html/rfc6750 (The OAuth 2.0 Bearer Token Usage)
+- https://tools.ietf.org/html/rfc7519 (JSON Web Token (JWT))
+  - https://tools.ietf.org/html/rfc7519#section-7.2 (Validating a JWT)
 - https://github.com/keycloak/keycloak-containers/blob/11.0.0/server/README.md
 - https://www.keycloak.org/docs-api/11.0/rest-api/index.html
 - https://www.keycloak.org/docs/latest/securing_apps

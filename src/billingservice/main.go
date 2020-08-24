@@ -22,11 +22,13 @@ var oauthServer = struct {
 }
 
 var oauthClient = struct {
-	clientID       string
-	clientPassword string
+	clientID                string
+	clientPassword          string
+	scopeNameBillingservice string
 }{
-	clientID:       "oauth-nailed-app-1-token-checker",
-	clientPassword: "7e9247c4-bcbe-4783-89f0-880d83ac147f",
+	clientID:                "oauth-nailed-app-1-token-checker",
+	clientPassword:          "7e9247c4-bcbe-4783-89f0-880d83ac147f",
+	scopeNameBillingservice: "billingService",
 }
 
 func main() {
@@ -64,14 +66,30 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 	}
 	fmt.Println("Access token is valid and active")
 	//
-	payloadString, nerr := getPayloadString(accessToken)
+	payload, nerr := getPayload(accessToken)
 	if nerr != nil {
 		nerr := fmt.Errorf("Could not decode paylod from accessToken: %v", nerr)
 		sendErrorResponseMessage(nerr, http.StatusBadRequest, rs)
 		return
 	}
 
-	fmt.Println("Payload: ", payloadString)
+	accessTokenPayload := &model.AccessTokenPayload{}
+	nerr = json.Unmarshal(payload, accessTokenPayload)
+	if nerr != nil {
+		fmt.Println("Could not unmarshal accessToken payload to model.AccessTokenPayload", nerr)
+		sendErrorResponseMessage(nerr, http.StatusBadRequest, rs)
+		return
+	}
+
+	scopes := strings.Split(accessTokenPayload.Scope, " ")
+	fmt.Println("Scopes from accessToken payload are")
+	for _, scope := range scopes {
+		fmt.Println("  scope :", scope)
+	}
+	if !strings.Contains(accessTokenPayload.Scope, oauthClient.scopeNameBillingservice) {
+		nerr := fmt.Errorf("Denied access because a access token's scope of '" + oauthClient.scopeNameBillingservice + "' is required but was not provided.")
+		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
+	}
 	//
 	s := model.BillingServicesResponse{Services: []string{"electric", "phone", "internet", "water"}}
 	rs.Header().Add("Content-Type", "application/json")
@@ -140,10 +158,10 @@ func isAccessTokenValid(accessToken string) bool {
 	return introspectionRequestingPartyTokenResponse.Active
 }
 
-func getPayloadString(accessToken string) (string, error) {
+func getPayload(accessToken string) ([]byte, error) {
 	tokenParts := strings.Split(accessToken, ".")
 	payload, nerr := base64.RawURLEncoding.DecodeString(tokenParts[1])
-	return string(payload), nerr
+	return payload, nerr
 }
 
 func sendErrorResponseMessage(nerr error, statusCode int, rs http.ResponseWriter) {

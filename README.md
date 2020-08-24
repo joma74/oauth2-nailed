@@ -48,7 +48,7 @@ The admin interface is then reachable via http://localhost:9112/auth/
 
 ## Administer Keycloak
 
-### Configure
+### Configure Realm
 
 - Name: myrealm
 - Client: oauth-nailed-app-1
@@ -71,6 +71,12 @@ So that
 
 - Name/Pwd: myuser/myuser
 - Email Verified: Off
+
+### Setup Client Scope
+
+Add new client scope
+
+- Name: billingService
 
 ## Starting the OAuth Client
 

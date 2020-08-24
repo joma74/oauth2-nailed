@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -50,22 +51,24 @@ func home(rs http.ResponseWriter, rq *http.Request) {
 func services(rs http.ResponseWriter, rq *http.Request) {
 	accessToken, nerr := getAccessToken(rq)
 	if nerr != nil {
-		fmt.Println(nerr.Error())
-		s := &model.BillingServicesErrorResponse{Error: nerr.Error()}
-		rs.Header().Add("Content-Type", "application/json")
-		rs.WriteHeader(http.StatusBadRequest)
-		encoder := json.NewEncoder(rs)
-		encoder.Encode(s)
+		sendErrorResponseMessage(nerr, http.StatusBadRequest, rs)
 		return
 	}
 	fmt.Println("Access token provided:", accessToken)
 	//
 	if !isAccessTokenValid(accessToken) {
-		fmt.Println("Access token is not valid or not active")
-		rs.WriteHeader(http.StatusForbidden)
+		nerr := errors.New("Access token is not valid or not active")
+		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
 		return
 	}
 	fmt.Println("Access token is valid and active")
+	//
+	// tokenParts := strings.Split(accessToken, ".")
+	// claims, nerr := base64.StdEncoding.DecodeString(tokenParts[1])
+	// if nerr != nil {
+	// 	fmt.Print("Could not decode paylod from accessToken", nerr)
+	// 	return
+	// }
 	//
 	s := model.BillingServicesResponse{Services: []string{"electric", "phone", "internet", "water"}}
 	rs.Header().Add("Content-Type", "application/json")
@@ -79,7 +82,7 @@ func getAccessToken(rq *http.Request) (string, error) {
 	if accessToken != "" {
 		authorizationHeaderParts := strings.Split(accessToken, " ")
 		if len(authorizationHeaderParts) != 2 {
-			return accessToken, fmt.Errorf("Authorization header format is invalid")
+			return accessToken, errors.New("Authorization header format is invalid")
 		}
 		return authorizationHeaderParts[1], nil
 	}
@@ -93,7 +96,7 @@ func getAccessToken(rq *http.Request) (string, error) {
 	if accessToken != "" {
 		return accessToken, nil
 	}
-	return accessToken, fmt.Errorf("Access token is not provided")
+	return accessToken, errors.New("Access token is not provided")
 }
 
 func isAccessTokenValid(accessToken string) bool {
@@ -132,4 +135,13 @@ func isAccessTokenValid(accessToken string) bool {
 	}
 
 	return introspectionRequestingPartyTokenResponse.Active
+}
+
+func sendErrorResponseMessage(nerr error, statusCode int, rs http.ResponseWriter) {
+	fmt.Println(nerr.Error())
+	s := &model.BillingServicesErrorResponse{Error: nerr.Error()}
+	rs.Header().Add("Content-Type", "application/json")
+	rs.WriteHeader(statusCode)
+	encoder := json.NewEncoder(rs)
+	encoder.Encode(s)
 }

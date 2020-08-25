@@ -142,6 +142,11 @@ Add scope billingService to Client Scopes of clients
 <img src="./docs/KeycloakAdministerClientScopeBillingServiceAudienceMapper_1.png" alt="Setup billingService Audience Mapper"
 	title="Setup billingService Audience Mapper" width="700" height="auto" />
 
+### Check generated token including output of the setup billingService Audience Mapper
+
+<img src="./docs/KeycloakEvaluateGeneratedAccessToken_WithScopeAndAudienceMapper.png" alt="Check generated token for the billingService Audience Mapper"
+	title="Check generated token for the billingService Audience Mapper" width="700" height="auto" />
+
 ## Starting the OAuth Auth Code Client
 
 ```

@@ -54,6 +54,25 @@ See https://tools.ietf.org/html/rfc6749#section-4.1
 
 See https://tools.ietf.org/html/rfc6749#section-4.2
 
+### The Resource Owner Password Credentials Grant
+
+> The resource owner password credentials grant type is suitable in
+> cases where the resource owner has a trust relationship with the
+> client, such as the device operating system or a highly privileged
+> application.
+>
+> This grant type is suitable for clients capable of obtaining the
+> resource owner's credentials (username and password, typically using
+> an interactive form). It is also used to migrate existing clients
+> using direct authentication schemes such as HTTP Basic or Digest
+> authentication to OAuth by converting the stored credentials to an
+> access token.
+
+<img src="./docs/OAuth2.0Standard_ResourceOwnerPasswordCredentialsGrant.png" alt="Resource Owner Password Credentials Grant Flow"
+	title="> This grant type is suitable for clients capable of obtaining the resource owner's credentials" width="700" height="auto" />
+
+See https://tools.ietf.org/html/rfc6749#section-4.3
+
 ## Setup Keycloak on Docker
 
 ```
@@ -171,6 +190,7 @@ _The numbers reference the related section in https://tools.ietf.org/html/rfc674
   - https://tools.ietf.org/html/rfc6749#section-4.1 (Authorization Code Grant)
   - https://tools.ietf.org/html/rfc6749#section-7 (Accessing Protected Resources)
   - https://tools.ietf.org/html/rfc6749#section-4.2 (Implicit Grant)
+  - https://tools.ietf.org/html/rfc6749#section-4.3 (Resource Owner Password Credentials Grant)
 - https://tools.ietf.org/html/rfc6750 (The OAuth 2.0 Bearer Token Usage)
 - https://tools.ietf.org/html/rfc7519 (JSON Web Token (JWT))
   - https://tools.ietf.org/html/rfc7519#section-7.2 (Validating a JWT)

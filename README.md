@@ -97,6 +97,7 @@ The admin interface is then reachable via http://localhost:9112/auth/
   - Client Protocol: openid-connect
   - Access Type: confidental
   - Valid Redirect URIs: http://localhost:9110/authCodeRedirect
+  - Access Token Lifespan: 1 minute (Advanced settings, to check refresh token)
 
 - Client: oauth-nailed-app-1-token-checker
 
@@ -191,6 +192,8 @@ _The numbers reference the related section in https://tools.ietf.org/html/rfc674
   - https://tools.ietf.org/html/rfc6749#section-7 (Accessing Protected Resources)
   - https://tools.ietf.org/html/rfc6749#section-4.2 (Implicit Grant)
   - https://tools.ietf.org/html/rfc6749#section-4.3 (Resource Owner Password Credentials Grant)
+  - https://tools.ietf.org/html/rfc6749#section-1.5 (Refresh Token)
+    - https://tools.ietf.org/html/rfc6749#section-6 (Refreshing an Access Token)
 - https://tools.ietf.org/html/rfc6750 (The OAuth 2.0 Bearer Token Usage)
 - https://tools.ietf.org/html/rfc7519 (JSON Web Token (JWT))
   - https://tools.ietf.org/html/rfc7519#section-7.2 (Validating a JWT)

@@ -1,17 +1,25 @@
-import React from "react"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import React, { Component } from "react"
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+} from "react-router-dom"
 import "./App.css"
 import AuthCodeRedirect from "./AuthCodeRedirect"
+import Services from "./Services"
 
 class App extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			access_token: "",
-			expires_in: "",
-			session_state: "",
-			token_type: "",
+		this.initialState = {
+			access_token: "???",
+			expires_in: "???",
+			session_state: "???",
+			token_type: "???",
 		}
+		this.state = Object.assign({}, this.initialState)
 	}
 
 	/**
@@ -23,6 +31,10 @@ class App extends React.Component {
 		if (this.state[k] !== v) {
 			this.setState({ [k]: v })
 		}
+	}
+
+	_setState = (newState) => {
+		this.setState(Object.assign(this.state, newState))
 	}
 
 	render() {
@@ -40,6 +52,21 @@ class App extends React.Component {
 				<Link to="/logout">
 					<button>Logout from Keycloak</button>
 				</Link>
+				<div>
+					<h2>Infos from Keycloak</h2>
+					<p>
+						session state:<pre>{this.state.session_state}</pre>
+					</p>
+					<p>
+						access token:<pre>{this.state.access_token}</pre>
+					</p>
+					<p>
+						expires_in:<pre>{this.state.expires_in}</pre>
+					</p>
+					<p>
+						token type:<pre>{this.state.token_type}</pre>
+					</p>
+				</div>
 				{/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
 				<Switch>
@@ -56,7 +83,10 @@ class App extends React.Component {
 						)}
 					></Route>
 					<Route path="/logout">
-						<Logout />
+						<Logout
+							_setState={this._setState}
+							_initialState={this.initialState}
+						/>
 					</Route>
 					<Route path="/">
 						<Home />
@@ -73,26 +103,25 @@ function Login() {
 	return null
 }
 
-function Services({ _accessToken }) {
-	const formData = new FormData()
-	formData.append("access_token", _accessToken)
-	fetch("http://localhost:9111/billing/v1/services", {
-		method: "POST",
-		body: formData,
-	})
-		.then((rs) => rs.json())
-		.then((data) => {
-			console.log(data)
-		})
-	return <h2>List of billing services (from the Protected Resource)</h2>
-}
+class Logout extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {}
+	}
 
-function Logout() {
-	return <h2>Logout</h2>
+	componentDidMount() {
+		const { _setState, _initialState } = this.props
+		_setState(_initialState)
+		return null
+	}
+
+	render() {
+		return <Redirect to="/" />
+	}
 }
 
 function Home() {
-	return <h2>Home</h2>
+	return null
 }
 
 export default App

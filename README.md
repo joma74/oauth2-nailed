@@ -2,10 +2,15 @@
 
 See https://www.udemy.com/course/oauth-2-nailed-the-core-framework-with-hands-dirty
 
-## The oauth-nailed-app-1 UI
+## The oauth-nailed-app-1-auth-code UI
 
-<img src="./docs/UIOfoauth-nailed-app-1.png" alt="The oauth-nailed-app-1 UI"
-	title="The oauth-nailed-app-1 UI" width="700" height="auto" />
+<img src="./docs/UIOfoauth-nailed-app-1-auth-code.png" alt="The oauth-nailed-app-1-auth-code UI"
+	title="The oauth-nailed-app-1-auth-code UI" width="700" height="auto" />
+
+## The oauth-nailed-app-2-implicit-grant UI
+
+<img src="./docs/UIOfoauth-nailed-app-2-implicit-grant.png" alt="The oauth-nailed-app-2-implicit-grant UI"
+	title="The oauth-nailed-app-2-implicit-grant UI" width="700" height="auto" />
 
 ## Treated OAuth 2.0 Flows
 
@@ -81,10 +86,10 @@ The admin interface is then reachable via http://localhost:9112/auth/
 
 - Client: oauth-nailed-app-2-implicit-grant
 
-  - Root URL: http://localhost:3000
+  - Root URL: http://localhost:9109
   - Client Protocol: openid-connect
   - Access Type: public
-  - Valid Redirect URIs: http://localhost:3000/authCodeRedirect
+  - Valid Redirect URIs: http://localhost:9109/authCodeRedirect
 
 So that
 
@@ -107,14 +112,14 @@ Add scope billingService to Client Scopes of clients
 - oauth-nailed-app-1-auth-code (Default)
 - oauth-nailed-app-2-implicit-grant (Optional)
 
-## Starting the OAuth Client
+## Starting the OAuth Auth Code Client
 
 ```
 cd src/client/
 go run .
 ```
 
-The OAuth Client page is then reachable via http://localhost:9110/
+The OAuth Auth Code Client page is then reachable via http://localhost:9110/
 
 It covers the flow of
 
@@ -139,6 +144,24 @@ It covers the flow of
 
 - E (Accessing Protected Resources, 7.)
 - F (Accessing Protected Resources, 7.)
+
+_The numbers reference the related section in https://tools.ietf.org/html/rfc6749_
+
+## Starting the OAuth Implicit Grant Client
+
+```
+cd src/implicit-client
+yarn start
+```
+
+The OAuth Implicit Grant Client page is then reachable via http://localhost:9109
+
+It covers the flow of
+
+- A (Authorization Request, 4.2.1)
+- C (Access Token Response, 4.2.2)
+
+_The numbers reference the related section in https://tools.ietf.org/html/rfc6749#section-4.2_
 
 ## References
 

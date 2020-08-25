@@ -30,15 +30,17 @@ var oauthServer = struct {
 }
 
 var oauthClient = struct {
-	clientID       string
-	clientPassword string
-	afterAuthURL   string
-	afterLogoutURL string
+	clientID            string
+	clientPassword      string
+	scopeBillingService string
+	afterAuthURL        string
+	afterLogoutURL      string
 }{
-	clientID:       "oauth-nailed-app-1-auth-code",
-	clientPassword: "0c061d83-f4f6-4678-94aa-5dc8d9584eea",
-	afterAuthURL:   "http://localhost:9110/authCodeRedirect",
-	afterLogoutURL: "http://localhost:9110/home",
+	clientID:            "oauth-nailed-app-1-auth-code",
+	clientPassword:      "0c061d83-f4f6-4678-94aa-5dc8d9584eea",
+	scopeBillingService: "billingService",
+	afterAuthURL:        "http://localhost:9110/authCodeRedirect",
+	afterLogoutURL:      "http://localhost:9110/home",
 }
 
 var servicesServer = struct {
@@ -101,6 +103,7 @@ func login(rs http.ResponseWriter, rq *http.Request) {
 	qs.Add("client_id", oauthClient.clientID)
 	qs.Add("response_type", "code")
 	qs.Add("redirect_uri", oauthClient.afterAuthURL)
+	qs.Add("scope", oauthClient.scopeBillingService)
 	nrq.URL.RawQuery = qs.Encode()
 	http.Redirect(rs, rq, nrq.URL.String(), http.StatusFound)
 }
@@ -129,6 +132,7 @@ func accessToken() {
 	form.Add("code", authCodeVars.Code)
 	form.Add("redirect_uri", oauthClient.afterAuthURL)
 	form.Add("client_id", oauthClient.clientID)
+	form.Add("scope", oauthClient.scopeBillingService)
 	nrq, nerr := http.NewRequest("POST", oauthServer.tokenURL, strings.NewReader(form.Encode()))
 	nrq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	nrq.SetBasicAuth(oauthClient.clientID, oauthClient.clientPassword)

@@ -22,13 +22,15 @@ var oauthServer = struct {
 }
 
 var oauthClient = struct {
-	clientID                string
-	clientPassword          string
-	scopeNameBillingservice string
+	clientID                   string
+	clientPassword             string
+	scopeNameBillingservice    string
+	audienceNameBillingservice string
 }{
-	clientID:                "oauth-nailed-app-1-token-checker",
-	clientPassword:          "7e9247c4-bcbe-4783-89f0-880d83ac147f",
-	scopeNameBillingservice: "billingService",
+	clientID:                   "oauth-nailed-app-1-token-checker",
+	clientPassword:             "7e9247c4-bcbe-4783-89f0-880d83ac147f",
+	scopeNameBillingservice:    "billingService",
+	audienceNameBillingservice: "billingService",
 }
 
 func main() {
@@ -84,10 +86,20 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 	scopes := strings.Split(accessTokenPayload.Scope, " ")
 	fmt.Println("Scopes from accessToken payload are")
 	for _, scope := range scopes {
-		fmt.Println("  scope :", scope)
+		fmt.Println(" - ", scope)
+	}
+	audiences := strings.Split(accessTokenPayload.Aud, " ")
+	fmt.Println("Audiences from accessToken payload are")
+	for _, audience := range audiences {
+		fmt.Println(" - ", audience)
 	}
 	if !strings.Contains(accessTokenPayload.Scope, oauthClient.scopeNameBillingservice) {
 		nerr := fmt.Errorf("Denied access because a access token's scope of '" + oauthClient.scopeNameBillingservice + "' is required but was not provided.")
+		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
+		return
+	}
+	if !strings.Contains(accessTokenPayload.Aud, oauthClient.audienceNameBillingservice) {
+		nerr := fmt.Errorf("Denied access because a access token's audience of '" + oauthClient.audienceNameBillingservice + "' is required but was not provided.")
 		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
 		return
 	}

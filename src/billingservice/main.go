@@ -82,23 +82,27 @@ func services(rs http.ResponseWriter, rq *http.Request) {
 		sendErrorResponseMessage(nerr, http.StatusBadRequest, rs)
 		return
 	}
-
+	//
 	scopes := strings.Split(accessTokenPayload.Scope, " ")
 	fmt.Println("Scopes from accessToken payload are")
 	for _, scope := range scopes {
 		fmt.Println(" - ", scope)
-	}
-	audiences := strings.Split(accessTokenPayload.Aud, " ")
-	fmt.Println("Audiences from accessToken payload are")
-	for _, audience := range audiences {
-		fmt.Println(" - ", audience)
 	}
 	if !strings.Contains(accessTokenPayload.Scope, oauthClient.scopeNameBillingservice) {
 		nerr := fmt.Errorf("Denied access because a access token's scope of '" + oauthClient.scopeNameBillingservice + "' is required but was not provided.")
 		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
 		return
 	}
-	if !strings.Contains(accessTokenPayload.Aud, oauthClient.audienceNameBillingservice) {
+	//
+	isValidAudience := false
+	fmt.Println("Audiences from accessToken payload are")
+	for _, audience := range accessTokenPayload.AudAsSlice() {
+		fmt.Println(" - ", audience)
+		if audience == oauthClient.audienceNameBillingservice {
+			isValidAudience = true
+		}
+	}
+	if !isValidAudience {
 		nerr := fmt.Errorf("Denied access because a access token's audience of '" + oauthClient.audienceNameBillingservice + "' is required but was not provided.")
 		sendErrorResponseMessage(nerr, http.StatusForbidden, rs)
 		return

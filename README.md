@@ -137,12 +137,15 @@ Add scope billingService to Client Scopes of clients
 - oauth-nailed-app-1-auth-code
   - Full Scope Allowed: OFF
 
-### Setup billingService Audience Mapper
+### Setup billingService and billingServiceV2 Audience Mapper
+
+<img src="./docs/KeycloakAdministerClientScopeBillingServiceAudienceMapper_2.png" alt="Setup billingService and billingServiceV2 Audience Mapper"
+    title="Setup billingService and billingServiceV2 Audience Mapper" width="700" height="auto" />
 
 <img src="./docs/KeycloakAdministerClientScopeBillingServiceAudienceMapper_1.png" alt="Setup billingService Audience Mapper"
 	title="Setup billingService Audience Mapper" width="700" height="auto" />
 
-### Check generated token including output of the setup billingService Audience Mapper
+### Check generated token includes output of the above billingService Audience Mapper
 
 <img src="./docs/KeycloakEvaluateGeneratedAccessToken_WithScopeAndAudienceMapper.png" alt="Check generated token for the billingService Audience Mapper"
 	title="Check generated token for the billingService Audience Mapper" width="700" height="auto" />

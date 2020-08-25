@@ -102,6 +102,11 @@ Add new client scope
 
 - Name: billingService
 
+Add scope billingService to Client Scopes of clients
+
+- oauth-nailed-app-1-auth-code (Default)
+- oauth-nailed-app-2-implicit-grant (Optional)
+
 ## Starting the OAuth Client
 
 ```
@@ -164,6 +169,7 @@ It covers the flow of
 - http://json2struct.mervine.net (Derive a Go struct type from a Json instance)
 - https://jwt.io/ (Inspect JWT token)
 - https://reactrouter.com/web/guides/quick-start (Router in React)
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS (Cross-Origin Resource Sharing (CORS))
 
 ### Go
 

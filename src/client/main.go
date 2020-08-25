@@ -66,6 +66,7 @@ func main() {
 	http.HandleFunc("/home", withMethodLogging(home))
 	http.HandleFunc("/login", withMethodLogging(login))
 	http.HandleFunc("/authCodeRedirect", withMethodLogging(authCodeRedirect))
+	http.HandleFunc("/refreshToken", withMethodLogging(refreshToken))
 	http.HandleFunc("/services", withMethodLogging(services))
 	http.HandleFunc("/logout", withMethodLogging(logout))
 	http.ListenAndServe(":9110", nil)
@@ -147,6 +148,67 @@ func accessToken() {
 		fmt.Println("Could not read body", nerr)
 		return
 	}
+	//
+	var out bytes.Buffer
+	nerr = json.Indent(&out, byteBody, "", "   ")
+	if nerr != nil {
+		fmt.Println("Could not pretty print response", nerr)
+		return
+	}
+	fmt.Printf("Access token response: %v\n", out.String())
+	if nrs.StatusCode != 200 {
+		fmt.Println("Expected access token response to be of status 200 but was ", nrs.StatusCode)
+		return
+	}
+	//
+	accessTokenResponse := &model.AccessTokenResponse{}
+	nerr = json.Unmarshal(byteBody, accessTokenResponse)
+	if nerr != nil {
+		fmt.Println("Could not unmarshal response to model.AccessTokenResponse", nerr)
+		return
+	}
+	authCodeVars.AccessToken = accessTokenResponse.AccessToken
+	authCodeVars.RefreshToken = accessTokenResponse.RefreshToken
+	authCodeVars.TokenScope = accessTokenResponse.Scope
+}
+
+func refreshToken(rs http.ResponseWriter, rq *http.Request) {
+	form := url.Values{}
+	form.Add("grant_type", "refresh_token")
+	form.Add("refresh_token", authCodeVars.RefreshToken)
+	nrq, nerr := http.NewRequest("POST", oauthServer.tokenURL, strings.NewReader(form.Encode()))
+	nrq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	nrq.SetBasicAuth(oauthClient.clientID, oauthClient.clientPassword)
+	if nerr != nil {
+		fmt.Println("Could not create new request", nerr)
+		return
+	}
+	c := http.Client{}
+	nrs, nerr := c.Do(nrq)
+	if nerr != nil {
+		fmt.Println("Could not get refresh token", nerr)
+		return
+	}
+	byteBody, nerr := ioutil.ReadAll(nrs.Body)
+	defer nrs.Body.Close()
+	if nerr != nil {
+		fmt.Println("Could not read body", nerr)
+		return
+	}
+	//
+	var out bytes.Buffer
+	nerr = json.Indent(&out, byteBody, "", "   ")
+	if nerr != nil {
+		fmt.Println("Could not pretty print response", nerr)
+		return
+	}
+	fmt.Printf("Refresh token response: %v\n", out.String())
+	if nrs.StatusCode != 200 {
+		fmt.Println("Expected refresh token response to be of status 200 but was ", nrs.StatusCode)
+		tServices.Execute(rs, authCodeVars)
+		return
+	}
+	//
 	accessTokenResponse := &model.AccessTokenResponse{}
 	nerr = json.Unmarshal(byteBody, accessTokenResponse)
 	if nerr != nil {
@@ -157,13 +219,7 @@ func accessToken() {
 	authCodeVars.RefreshToken = accessTokenResponse.RefreshToken
 	authCodeVars.TokenScope = accessTokenResponse.Scope
 	//
-	var out bytes.Buffer
-	nerr = json.Indent(&out, byteBody, "", "   ")
-	if nerr != nil {
-		fmt.Println("Could not pretty print response", nerr)
-		return
-	}
-	fmt.Printf("Access token response: %v\n", out.String())
+	http.Redirect(rs, rq, "/home", http.StatusFound)
 }
 
 func services(rs http.ResponseWriter, rq *http.Request) {

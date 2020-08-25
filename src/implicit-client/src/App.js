@@ -30,6 +30,9 @@ class App extends React.Component {
 			<Router>
 				<div>
 					<nav>
+						<div className="App">
+							<h1>Implicit Grant Type</h1>
+						</div>
 						<ul>
 							<li>
 								<Link to="/">Home</Link>
@@ -45,7 +48,6 @@ class App extends React.Component {
 							</li>
 						</ul>
 					</nav>
-
 					{/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
 					<Switch>
@@ -53,7 +55,7 @@ class App extends React.Component {
 							<Login />
 						</Route>
 						<Route path="/services">
-							<Services />
+							<Services _accessToken={this.state.access_token} />
 						</Route>
 						<Route
 							path="/authCodeRedirect"
@@ -76,11 +78,21 @@ class App extends React.Component {
 
 function Login() {
 	window.location.href =
-		"http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/auth?client_id=oauth-nailed-app-2-implicit-grant&response_type=token&redirect_uri=http://localhost:3000/authCodeRedirect"
+		"http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/auth?client_id=oauth-nailed-app-2-implicit-grant&response_type=token&redirect_uri=http://localhost:3000/authCodeRedirect&scope=billingService"
 	return null
 }
 
-function Services() {
+function Services({ _accessToken }) {
+	const formData = new FormData()
+	formData.append("access_token", _accessToken)
+	fetch("http://localhost:9111/billing/v1/services", {
+		method: "POST",
+		body: formData,
+	})
+		.then((rs) => rs.json())
+		.then((data) => {
+			console.log(data)
+		})
 	return <h2>Services</h2>
 }
 

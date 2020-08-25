@@ -28,49 +28,40 @@ class App extends React.Component {
 	render() {
 		return (
 			<Router>
-				<div>
-					<nav>
-						<div className="App">
-							<h1>Implicit Grant Type</h1>
-						</div>
-						<ul>
-							<li>
-								<Link to="/">Home</Link>
-							</li>
-							<li>
-								<Link to="/login">Login</Link>
-							</li>
-							<li>
-								<Link to="/services">Services</Link>
-							</li>
-							<li>
-								<Link to="/logout">Logout</Link>
-							</li>
-						</ul>
-					</nav>
-					{/* A <Switch> looks through its children <Route>s and
+				<h1>
+					<Link to="/">oauth-nailed-app-2-implicit-grant</Link>
+				</h1>
+				<Link to="/login">
+					<button>Login with Keycloak</button>
+				</Link>
+				<Link to="/services">
+					<button>Show billing services</button>
+				</Link>
+				<Link to="/logout">
+					<button>Logout from Keycloak</button>
+				</Link>
+				{/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
-					<Switch>
-						<Route path="/login">
-							<Login />
-						</Route>
-						<Route path="/services">
-							<Services _accessToken={this.state.access_token} />
-						</Route>
-						<Route
-							path="/authCodeRedirect"
-							render={() => (
-								<AuthCodeRedirect _setStateValue={this._setStateValue} />
-							)}
-						></Route>
-						<Route path="/logout">
-							<Logout />
-						</Route>
-						<Route path="/">
-							<Home />
-						</Route>
-					</Switch>
-				</div>
+				<Switch>
+					<Route path="/login">
+						<Login />
+					</Route>
+					<Route path="/services">
+						<Services _accessToken={this.state.access_token} />
+					</Route>
+					<Route
+						path="/authCodeRedirect"
+						render={() => (
+							<AuthCodeRedirect _setStateValue={this._setStateValue} />
+						)}
+					></Route>
+					<Route path="/logout">
+						<Logout />
+					</Route>
+					<Route path="/">
+						<Home />
+					</Route>
+				</Switch>
 			</Router>
 		)
 	}
@@ -78,7 +69,7 @@ class App extends React.Component {
 
 function Login() {
 	window.location.href =
-		"http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/auth?client_id=oauth-nailed-app-2-implicit-grant&response_type=token&redirect_uri=http://localhost:3000/authCodeRedirect&scope=billingService"
+		"http://localhost:9112/auth/realms/myrealm/protocol/openid-connect/auth?client_id=oauth-nailed-app-2-implicit-grant&response_type=token&redirect_uri=http://localhost:9109/authCodeRedirect&scope=billingService"
 	return null
 }
 
@@ -93,7 +84,7 @@ function Services({ _accessToken }) {
 		.then((data) => {
 			console.log(data)
 		})
-	return <h2>Services</h2>
+	return <h2>List of billing services (from the Protected Resource)</h2>
 }
 
 function Logout() {

@@ -98,6 +98,8 @@ The admin interface is then reachable via http://localhost:9112/auth/
   - Access Type: confidental
   - Valid Redirect URIs: http://localhost:9110/authCodeRedirect
   - Access Token Lifespan: 1 minute (Advanced settings, to check refresh token)
+  - Consent Required: on
+  - Display Client On Consent Screen: on
 
 - Client: oauth-nailed-app-1-token-checker
 
@@ -149,6 +151,18 @@ Add scope billingService to Client Scopes of clients
 
 <img src="./docs/KeycloakEvaluateGeneratedAccessToken_WithScopeAndAudienceMapper.png" alt="Check generated token for the billingService Audience Mapper"
 	title="Check generated token for the billingService Audience Mapper" width="700" height="auto" />
+
+### Consents in Keycloak
+
+Grant consent screen
+
+<img src="./docs/KeycloakConsentToGrantAccess.png" alt="Consent to grant access to infos"
+	title="Consent to grant access to infos" width="700" height="auto" />
+
+Administer consent revocation via Keycloak
+
+<img src="./docs/KeycloakAdministerRevokeConsents.png" alt="Check and revoek consent of Keycloak user"
+    title="Check and revoek consent of Keycloak user" width="700" height="auto" />
 
 ## Starting the OAuth Auth Code Client
 

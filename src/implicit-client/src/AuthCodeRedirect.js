@@ -1,5 +1,5 @@
-import { Component } from "react"
-import { withRouter } from "react-router-dom"
+import React, { Component } from "react"
+import { withRouter, Redirect } from "react-router-dom"
 
 class AuthCodeRedirect extends Component {
 	constructor(props) {
@@ -27,7 +27,7 @@ class AuthCodeRedirect extends Component {
 		return null
 	}
 	render() {
-		return null
+		return <Redirect to="/" />
 	}
 }
 

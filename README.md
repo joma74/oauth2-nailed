@@ -129,8 +129,18 @@ Add new client scope
 
 Add scope billingService to Client Scopes of clients
 
-- oauth-nailed-app-1-auth-code (Default)
+- oauth-nailed-app-1-auth-code (Optional)
 - oauth-nailed-app-2-implicit-grant (Optional)
+
+### Setup Scope
+
+- oauth-nailed-app-1-auth-code
+  - Full Scope Allowed: OFF
+
+### Setup billingService Audience Mapper
+
+<img src="./docs/KeycloakAdministerClientScopeBillingServiceAudienceMapper_1.png" alt="Setup billingService Audience Mapper"
+	title="Setup billingService Audience Mapper" width="700" height="auto" />
 
 ## Starting the OAuth Auth Code Client
 

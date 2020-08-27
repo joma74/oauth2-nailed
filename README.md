@@ -236,6 +236,8 @@ _The numbers reference the related section in https://tools.ietf.org/html/rfc674
   - https://tools.ietf.org/html/rfc7519#section-7.2 (Validating a JWT)
 - https://tools.ietf.org/html/rfc7662 (OAuth 2.0 Token Introspection)
 - https://tools.ietf.org/html/rfc7662#section-2.1 (Introspection Request)
+- https://www.ietf.org/id/draft-ietf-oauth-security-topics-15.html (OAuth 2.0 Security Best Current Practice)
+  - https://tools.ietf.org/html/rfc7636 (Proof Key for Code Exchange(PKCE) by OAuth Public Clients)
 
 ### OpenID Connect
 

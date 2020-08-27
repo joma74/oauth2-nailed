@@ -220,6 +220,15 @@ It covers the flow of
 
 _The numbers reference the related section in https://tools.ietf.org/html/rfc6749#section-4.2_
 
+## Proof Key for Code Exchange(PKCE) by OAuth Public Clients
+
+The redirect URI Request of the OAuth Authentication Code Flow is deemed interceptable by a mallicious app on the same OS as where the redirect URI points to. So, a mallicious app might get the access token thereafter.
+
+In that case, the Requesting Party creates a Proof Key and sends it's (prefered SHA265) hash along with the Authentication request. The Authorization server remembers that hash, and when the access token is requested, compares it to Proof Key, which is then sent along the request.
+
+<img src="./docs/OAuth2.0Standard_PKCE.png" alt="Consent to grant access to infos"
+	title="Consent to grant access to infos" width="700" height="auto" />
+
 ## References
 
 ### ietf rfc\* Standards

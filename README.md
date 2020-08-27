@@ -4,10 +4,14 @@ See https://www.udemy.com/course/oauth-2-nailed-the-core-framework-with-hands-di
 
 ## The oauth-nailed-app-1-auth-code UI
 
+A golang server app
+
 <img src="./docs/UIOfoauth-nailed-app-1-auth-code.png" alt="The oauth-nailed-app-1-auth-code UI"
 	title="The oauth-nailed-app-1-auth-code UI" width="700" height="auto" />
 
 ## The oauth-nailed-app-2-implicit-grant UI
+
+A react client app
 
 <img src="./docs/UIOfoauth-nailed-app-2-implicit-grant.png" alt="The oauth-nailed-app-2-implicit-grant UI"
 	title="The oauth-nailed-app-2-implicit-grant UI" width="700" height="auto" />
